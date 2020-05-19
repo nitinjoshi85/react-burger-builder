@@ -3,14 +3,48 @@
     border: solid 1px #eee;
     box-shadow: 0 2px 3px #ccc;
     padding: 10px;
-    margin: 10px 0;
+    margin: 10px;
     box-sizing: border-box;
 }
 
 .Order .Span {
     text-transform: capitalize;
     display: inline-block;
-    margin: 0 8px;
-    border: 1px solid #ccc;
-    padding: 5px;
+    margin: 0;
+}
+
+.Order .Ing {
+    width: 90%;
+    margin: 1px;
+}
+
+.Order label {
+    font-weight: bold;
+}
+
+.Order section {
+    display: inline-block;
+    width: 90%;
+}
+
+.Order .Row {
+    display: flex;
+}
+
+.Order .Column {
+    width: 95%;
+}
+
+@media (min-width: 500px) {
+    .Order .Span {
+        margin: 2px 8px;
+    }
+
+    .Order section {
+        width: 90%;
+    }
+
+    .Order .Column {
+        width: 50%;
+    }
 }

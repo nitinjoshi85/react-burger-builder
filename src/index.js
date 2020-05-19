@@ -1,15 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter} from 'react-router-dom';
-import reducer from './store/reducer';
+import burgerBuilderReducer from './store/reducers/burgerBuilder';
+import orderReducer from './store/reducers/order';
+import authReducer from './store/reducers/auth';
 
-const store = createStore(reducer);
+const rootReducer = combineReducers({
+    burgerBuilder: burgerBuilderReducer,
+    order: orderReducer,
+    auth: authReducer
+})
 
-ReactDOM.render(<Provider store={store}><BrowserRouter><App appTitle="Person Manager" /></BrowserRouter></Provider>, document.getElementById('root'));
+//https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd/related?hl=en
+//const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// basic
+// window.__REDUX_DEVTOOLS_EXTENSION_ && window.__REDUX_DEVTOOLS_EXTENSION_()
+
+const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(thunk)
+));
+
+const app = (
+    <Provider store={store}>
+        <BrowserRouter>
+            <App appTitle="Person Manager" />
+        </BrowserRouter>
+    </Provider>
+);
+
+ReactDOM.render(app, document.getElementById('root'));
 registerServiceWorker();

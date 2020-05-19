@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import CheckoutSummary from '../../Components/Orders/Order/CheckoutSummary/CheckoutSummary';
 import ContactData from '../../Containers/ContactData/ContactData';
-import Button from '../../Components/UI/Button/Button';
 
 class checkout extends Component {
     
-    componentWillMount() {
-       console.log('checkout.js mounted');
-    }
-
     checkoutCanceled = () => {
         this.props.history.goBack();
     }
@@ -24,18 +19,10 @@ class checkout extends Component {
         this.props.history.replace('/');
     }
 
-
     render () {
-        if (!this.props.ingredients) {
-            return (
-                <div style={{textAlign: 'center'}}>
-                    <p>Looks like you are lost!</p>
-                    <Button type="Danger" style={{color: 'black'}} clicked={this.buildeMyBurger}>Go To Build My Burger</Button>
-                </div>
-            );
+        if (!this.props.ingredients || this.props.purchased) {
+            return ( <Redirect to="/" /> );
         }
-        console.log('ingredients: ', this.props.ingredients);
-        console.log('path: ', this.props.match.url);
         return (
             <div>
                 <CheckoutSummary 
@@ -44,7 +31,7 @@ class checkout extends Component {
                     price={this.props.price}
                     ingredients={this.props.ingredients}/>
                 <Route path={this.props.match.url + '/contact-data'}>
-                    <ContactData />
+                    <ContactData history={this.props.history} />
                 </Route>    
             </div>
         );    
@@ -53,8 +40,9 @@ class checkout extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        price: state.totalPrice
+        ingredients: state.burgerBuilder.ingredients,
+        price: state.burgerBuilder.totalPrice,
+        purchased: state.order.purchased
     }
 }
 

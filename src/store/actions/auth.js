@@ -1,7 +1,7 @@
 import * as actionTypes from './actionTypes';
 import axios from 'axios';
 
-import * as config from './config';
+import * as config from '../../config';
 import Utility from '../../Utility/utility';
 
 export const authStart = () => {
